@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="jfxlib">
+    <CLASSES>
+      <root url="file:///usr/lib/jvm/default/jfxlib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file:///usr/lib/jvm/default/jfxlib" recursive="false" />
+  </library>
+</component>
