@@ -47,11 +47,10 @@ public class Neighbours extends Application {
         double threshold = 0.7;
         //for(int i = 0; i<world.length;i++) {
 
-        // TODO update world
-        int[] freeSpace = fischerYates(empty(world)); //TODO fix hardcoded numempty
 
-        int[] disIndex = listDisGruntled(world, threshold);
-        world = moveDisgruntled(disIndex,freeSpace,world);
+        int[] freeSpace = fischerYates(empty(world)); //Find the indices for all empty spots, then shuffle them.
+        int[] disIndex = listDisGruntled(world, threshold); //Find out where the disgruntled actors are
+        world = moveDisgruntled(disIndex,freeSpace,world); //Use those arrays to update tho world array.
     }
 
 
@@ -149,11 +148,17 @@ public class Neighbours extends Application {
         return world;
     }
     /*
-        Iterates over the world matrix and generates an array of all f
+        Iterates over the world matrix and creates an array of indices to where the empty spots
+        are, which is then returned. The indices found are unidimensional and can be used with our
+        getByindex/setByIndex methods.
      */
     int[] empty(Actor[][] world) {
         int numEmpty = 0;
-
+        //Because we don't have access to the dist array in this method, we do not
+        //know how many empty spots there are. Furthermore, arrays are fixed length and we are not
+        //allowed to use Lists. This means we need to iterate twice over the array, once to count
+        //the number of empty spots, then we need to create the array and iterate a second time over
+        //the world
         for(int i =0; i<world.length*world[0].length;i++) {
             if (getByIndex(world, i) == null) {
                 numEmpty++;
@@ -175,6 +180,8 @@ public class Neighbours extends Application {
 
     int[] listDisGruntled(Actor[][] world, double threshold) {
         int numDisgruntled = 0;
+        //Here we have the same problem that we had in the other method,
+        //We don't know how many disgruntled actors there are and we cannot grow an array
         for(int i = 0;i<world.length*world[0].length;i++) {
             if(disgruntled(world,i,threshold)) {
                 numDisgruntled++;
@@ -197,6 +204,9 @@ public class Neighbours extends Application {
         return 0 <= row && row < size && 0 <= col && col < size;
     }
 
+    /*
+    Determines whether actor at index i in the world is disgruntled according to threshold.
+     */
     boolean disgruntled(Actor[][] world,int index, double threshold) {
         if (getByIndex(world,index)==null) {
             return false;
